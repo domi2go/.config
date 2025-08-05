@@ -29,7 +29,7 @@ keymap.set("n", "gx", ":!open <c-r><c-a><CR>") -- open URL under cursor
 
 keymap.set("n", "J", "mzJ`z")                  -- when using J cursor stays at beginning
 keymap.set("n", "<C-d>", "<C-d>zz")            -- keep cursor in the middle when Ctrl + d
-keymap.set("n", "<C-u>", "<C-u>zz")            -- when using J cursor stays at beginning
+keymap.set("n", "<C-u>", "<C-u>zz")            -- keep cursor in the middle when Ctrl + u
 keymap.set("n", "n", "nzzzv")                  -- keep cursor in the middle when searching with n
 keymap.set("n", "N", "Nzzzv")                  -- keep cursor in the middle when searching with N
 
@@ -63,6 +63,9 @@ keymap.set("n", "<leader>Y", "\"+Y")  -- Yank into system clipboard
 keymap.set("x", "<leader>p", "\"_dP") -- when pasting do not load whats pasted into the buffer
 keymap.set("n", "<leader>d", "\"_d")  -- delete into the void
 keymap.set("v", "<leader>d", "\"_d")  -- delete into the void
+
+-- Maven
+keymap.set("n", "<leader>mr", ":mvn clean compile javafx:run<CR>") -- Maven run javafx
 
 -- Split window management
 keymap.set("n", "<leader>sv", "<C-w>v")     -- split window vertically
