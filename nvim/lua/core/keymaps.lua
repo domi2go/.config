@@ -9,6 +9,7 @@ vim.keymap.set("n", "<leader>ww", function()
   if vim.bo.filetype == "java" then
     -- Organize imports via jdtls
     require('jdtls').organize_imports()
+    vim.cmd("w")
   else
     -- For other filetypes, just save
     vim.cmd("w")
@@ -65,7 +66,7 @@ keymap.set("n", "<leader>d", "\"_d")  -- delete into the void
 keymap.set("v", "<leader>d", "\"_d")  -- delete into the void
 
 -- Maven
-keymap.set("n", "<leader>mr", ":mvn clean compile javafx:run<CR>") -- Maven run javafx
+keymap.set("n", "<leader>mr", ":!mvn clean compile javafx:run<CR>") -- Maven run javafx
 
 -- Split window management
 keymap.set("n", "<leader>sv", "<C-w>v")     -- split window vertically
