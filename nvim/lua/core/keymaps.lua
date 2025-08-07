@@ -66,7 +66,18 @@ keymap.set("n", "<leader>d", "\"_d")  -- delete into the void
 keymap.set("v", "<leader>d", "\"_d")  -- delete into the void
 
 -- Maven
-keymap.set("n", "<leader>mr", ":!mvn clean compile javafx:run<CR>") -- Maven run javafx
+-- keymap.set("n", "<leader>mr", ":!mvn clean compile javafx:run<CR>") -- Maven run javafx
+keymap.set("n", "<leader>mr", function()
+  vim.cmd("botright split | terminal mvn clean compile javafx:run")
+  vim.cmd([[
+    augroup CloseTerminalOnExit
+      autocmd!
+      autocmd TermClose * ++once if &buftype == 'terminal' | bd! | endif
+    augroup END
+  ]])
+end)
+
+
 
 -- Split window management
 keymap.set("n", "<leader>sv", "<C-w>v")     -- split window vertically
