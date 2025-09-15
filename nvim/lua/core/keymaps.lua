@@ -7,13 +7,10 @@ local keymap = vim.keymap
 
 vim.keymap.set("n", "<leader>ww", function()
   if vim.bo.filetype == "java" then
-    -- Organize imports via jdtls
     require('jdtls').organize_imports()
-    vim.cmd("w")
-  else
-    -- For other filetypes, just save
-    vim.cmd("w")
+    vim.lsp.buf.format({ async = false })
   end
+  vim.cmd("w")
 end)
 
 vim.keymap.set("n", "<leader>wq", function()
@@ -33,12 +30,13 @@ keymap.set("n", "<C-d>", "<C-d>zz")            -- keep cursor in the middle when
 keymap.set("n", "<C-u>", "<C-u>zz")            -- keep cursor in the middle when Ctrl + u
 keymap.set("n", "n", "nzzzv")                  -- keep cursor in the middle when searching with n
 keymap.set("n", "N", "Nzzzv")                  -- keep cursor in the middle when searching with N
-
+keymap.set("n", "<A-j>", "yyp")                -- copy current line into the next one
+keymap.set("n", "<A-k>", ":-1yyp")             -- copy current line into the top one
 keymap.set("v", "J", ":m '>+1<CR>gv=gv")       -- move line up
 keymap.set("v", "K", ":m '<-2<CR>gv=gv")       -- move line down
 
 -- replace word you are hovering over currently
-keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>]])
 
 -- Technical keymaps
 
@@ -66,7 +64,7 @@ keymap.set("n", "<leader>d", "\"_d")  -- delete into the void
 keymap.set("v", "<leader>d", "\"_d")  -- delete into the void
 
 -- Maven
--- keymap.set("n", "<leader>mr", ":!mvn clean compile javafx:run<CR>") -- Maven run javafx
+-- run application
 keymap.set("n", "<leader>mr", function()
   vim.cmd("botright split | terminal mvn clean compile javafx:run")
   vim.cmd([[
@@ -77,7 +75,10 @@ keymap.set("n", "<leader>mr", function()
   ]])
 end)
 
-
+-- compile
+vim.keymap.set("n", "<leader>mc", function()
+  vim.cmd("botright split | terminal mvn compile")
+end)
 
 -- Split window management
 keymap.set("n", "<leader>sv", "<C-w>v")     -- split window vertically
@@ -119,7 +120,12 @@ keymap.set("n", "<leader>er", ":NvimTreeFocus<CR>")    -- toggle focus to file e
 keymap.set("n", "<leader>ef", ":NvimTreeFindFile<CR>") -- find file in file explorer
 
 -- Telescope
-keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, {})                -- fuzzy find files in project
+keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, {}) -- fuzzy find files in project
+keymap.set('n', '<leader>fc', function()
+  require('telescope.builtin').find_files {                                -- find config directory
+    cwd = vim.fn.stdpath("config")
+  }
+end)
 keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, {})                 -- grep file contents in project
 keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, {})                   -- fuzzy find open buffers
 keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, {})                 -- fuzzy find help tags
@@ -135,6 +141,21 @@ keymap.set('n', '<leader>ft',
     if not success or not node then return end;
     require('telescope.builtin').live_grep({ search_dirs = { node.absolute_path } })
   end)
+
+-- Refactorings
+vim.keymap.set("n", "<leader>rv", function()
+  require('jdtls').extract_variable()
+end)
+
+-- Extract Method
+vim.keymap.set("n", "<leader>rm", function()
+  require('jdtls').extract_method()
+end)
+
+-- Extract Constant
+vim.keymap.set("n", "<leader>rc", function()
+  require('jdtls').extract_constant()
+end)
 
 -- Git-blame
 keymap.set("n", "<leader>gb", ":GitBlameToggle<CR>") -- toggle git blame
@@ -156,6 +177,7 @@ keymap.set("n", "<leader>h9", function() require("harpoon.ui").nav_file(9) end)
 keymap.set("n", "<leader>xr", ":call VrcQuery()<CR>") -- Run REST query
 
 -- LSP
+
 keymap.set('n', '<leader>gg', '<cmd>lua vim.lsp.buf.hover()<CR>')
 keymap.set('n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
 keymap.set('n', '<leader>gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
@@ -173,18 +195,11 @@ keymap.set('n', '<leader>gn', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 keymap.set('n', '<leader>tr', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
 keymap.set('i', '<C-Space>', '<cmd>lua vim.lsp.buf.completion()<CR>')
 
--- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
-keymap.set("n", '<leader>go', function()
-  if vim.bo.filetype == 'java' then
-    require('jdtls').organize_imports();
-  end
-end)
+-- Specific keymaps for Java files (these can be done in the ftplugin directory instead if you prefer)
+local jdtls = require("jdtls")
 
-keymap.set("n", '<leader>gu', function()
-  if vim.bo.filetype == 'java' then
-    require('jdtls').update_projects_config();
-  end
-end)
+-- Java: Organize Imports
+keymap.set("n", "<leader>oi", function() jdtls.organize_imports() end)
 
 keymap.set("n", '<leader>tc', function()
   if vim.bo.filetype == 'java' then

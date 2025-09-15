@@ -84,7 +84,7 @@ local config = {
         enabled = true,
       },
       references = {
-        includeDecompiledSources = true,
+        includeDecompiledSources = false,
       },
       signatureHelp = { enabled = true },
       format = {
@@ -135,6 +135,14 @@ local config = {
     -- References the bundles defined above to support Debugging and Unit Testing
     bundles = bundles,
     extendedClientCapabilities = jdtls.extendedClientCapabilities,
+
+    workspace = workspace_dir,
+    -- Attach JDK source manually
+    sources = {
+      sourcePaths = {
+        "/usr/lib/jvm/java-21-openjdk-amd64/lib/src.zip",
+      },
+    },
   },
 }
 
