@@ -27,6 +27,7 @@ return {
           reverse_directories = true
         }
       },
+      file_ignore_patterns = { "src/main/resources/" },
     }
   }
 }

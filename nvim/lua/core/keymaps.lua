@@ -30,8 +30,7 @@ keymap.set("n", "<C-d>", "<C-d>zz")            -- keep cursor in the middle when
 keymap.set("n", "<C-u>", "<C-u>zz")            -- keep cursor in the middle when Ctrl + u
 keymap.set("n", "n", "nzzzv")                  -- keep cursor in the middle when searching with n
 keymap.set("n", "N", "Nzzzv")                  -- keep cursor in the middle when searching with N
-keymap.set("n", "<A-j>", "yyp")                -- copy current line into the next one
-keymap.set("n", "<A-k>", ":-1yyp")             -- copy current line into the top one
+keymap.set("v", "<A-j>", "yyp")                -- copy current line into the next one
 keymap.set("v", "J", ":m '>+1<CR>gv=gv")       -- move line up
 keymap.set("v", "K", ":m '<-2<CR>gv=gv")       -- move line down
 
@@ -54,6 +53,12 @@ keymap.set("v", "<leader>p",
     content = content:gsub("\r", "")
     vim.api.nvim_paste(content, true, -1)
   end)
+
+---- Auto indent on empty line.
+vim.keymap.set('n', 'i', function()
+  return string.match(vim.api.nvim_get_current_line(), '%g') == nil
+      and 'cc' or 'i'
+end, { expr = true, noremap = true })
 
 keymap.set("n", "<leader>y", "\"+y")  -- Yank into system clipboard
 keymap.set("v", "<leader>y", "\"+y")  -- Yank into system clipboard
@@ -141,7 +146,7 @@ keymap.set('n', '<leader>ft',
     if not success or not node then return end;
     require('telescope.builtin').live_grep({ search_dirs = { node.absolute_path } })
   end)
-
+-- keymap.set('n', '<leader>fm', function() require('telescope.builtin').treesitter({default_text=":method:"}) end) -- fuzzy find methods in current class
 -- Refactorings
 vim.keymap.set("n", "<leader>rv", function()
   require('jdtls').extract_variable()
