@@ -30,9 +30,9 @@ keymap.set("n", "<C-d>", "<C-d>zz")            -- keep cursor in the middle when
 keymap.set("n", "<C-u>", "<C-u>zz")            -- keep cursor in the middle when Ctrl + u
 keymap.set("n", "n", "nzzzv")                  -- keep cursor in the middle when searching with n
 keymap.set("n", "N", "Nzzzv")                  -- keep cursor in the middle when searching with N
-keymap.set("v", "<A-j>", "yyp")                -- copy current line into the next one
-keymap.set("v", "J", ":m '>+1<CR>gv=gv")       -- move line up
+keymap.set("n", "<A-j>", "yyp")                -- copy current line into the next one
 keymap.set("v", "K", ":m '<-2<CR>gv=gv")       -- move line down
+keymap.set("v", "J", ":m '>+1<CR>gv=gv")       -- move line up
 
 -- replace word you are hovering over currently
 keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>]])
@@ -94,6 +94,7 @@ keymap.set("n", "<leader>sj", "<C-w>-")     -- make split window height shorter
 keymap.set("n", "<leader>sk", "<C-w>+")     -- make split windows height taller
 keymap.set("n", "<leader>sl", "<C-w>>5")    -- make split windows width bigger
 keymap.set("n", "<leader>sh", "<C-w><5")    -- make split windows width smaller
+keymap.set("n", "<leader>so", ":only<CR>")  -- close all besides of current
 
 -- Tab management
 keymap.set("n", "<leader>to", ":tabnew<CR>")   -- open a new tab
@@ -131,13 +132,15 @@ keymap.set('n', '<leader>fc', function()
     cwd = vim.fn.stdpath("config")
   }
 end)
-keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, {})                 -- grep file contents in project
-keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, {})                   -- fuzzy find open buffers
-keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, {})                 -- fuzzy find help tags
-keymap.set('n', '<leader>fs', require('telescope.builtin').current_buffer_fuzzy_find, {}) -- fuzzy find in current file buffer
-keymap.set('n', '<leader>fo', require('telescope.builtin').lsp_document_symbols, {})      -- fuzzy find LSP/class symbols
-keymap.set('n', '<leader>fi', require('telescope.builtin').lsp_incoming_calls, {})        -- fuzzy find LSP/incoming calls
--- keymap.set('n', '<leader>fm', function() require('telescope.builtin').treesitter({default_text=":method:"}) end) -- fuzzy find methods in current class
+vim.keymap.set("n", "<leader>fa", function()
+  require("telescope.builtin").lsp_dynamic_workspace_symbols({ prompt_title = "Search across all" })
+end)
+keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep, {})                         -- grep file contents in project
+keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, {})                           -- fuzzy find open buffers
+keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, {})                         -- fuzzy find help tags
+keymap.set('n', '<leader>fs', require('telescope.builtin').current_buffer_fuzzy_find, {})         -- fuzzy find in current file buffer
+keymap.set('n', '<leader>fo', require('telescope.builtin').lsp_document_symbols, {})              -- fuzzy find LSP/class symbols
+keymap.set('n', '<leader>fi', require('telescope.builtin').lsp_incoming_calls, {})                -- fuzzy find LSP/incoming calls
 keymap.set('n', '<leader>fm',
   function() require('telescope.builtin').treesitter({ symbols = { 'function', 'method' } }) end) -- fuzzy find methods in current class
 keymap.set('n', '<leader>ft',
@@ -146,7 +149,6 @@ keymap.set('n', '<leader>ft',
     if not success or not node then return end;
     require('telescope.builtin').live_grep({ search_dirs = { node.absolute_path } })
   end)
--- keymap.set('n', '<leader>fm', function() require('telescope.builtin').treesitter({default_text=":method:"}) end) -- fuzzy find methods in current class
 
 -- Refactorings
 vim.keymap.set("n", "<leader>rv", function()

@@ -74,9 +74,6 @@ local config = {
           },
         },
       },
-      test = {
-        vmArgs = "-DtestMode=true"
-      },
       maven = {
         downloadSources = true,
       },
