@@ -149,6 +149,9 @@ keymap.set('n', '<leader>ft',
     if not success or not node then return end;
     require('telescope.builtin').live_grep({ search_dirs = { node.absolute_path } })
   end)
+vim.keymap.set("n", "<leader>fw", function()
+  require("telescope.builtin").diagnostics({ cwd = vim.fn.getcwd() })
+end)
 
 -- Refactorings
 vim.keymap.set("n", "<leader>rv", function()

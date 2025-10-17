@@ -141,6 +141,9 @@ local config = {
     sources = {
       sourcePaths = {
         "/usr/lib/jvm/java-21-openjdk-amd64/lib/src.zip",
+        "/home/dow/.m2/repository/org/openjfx/javafx-controls/21/javafx-controls-21-sources.jar",
+        "/home/dow/.m2/repository/org/openjfx/javafx-graphics/21/javafx-graphics-21-sources.jar",
+        "/home/dow/.m2/repository/org/openjfx/javafx-base/21/javafx-base-21-sources.jar",
       },
     },
   },
