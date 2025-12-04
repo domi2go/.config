@@ -24,7 +24,7 @@ return {
         enable = true,
         lookahead = true,
         keymaps = {
-          ["af"] = "@function.outer",
+          ["of"] = "@function.outer",
           ["if"] = "@function.inner",
         },
       },

@@ -68,6 +68,14 @@ keymap.set("x", "<leader>p", "\"_dP") -- when pasting do not load whats pasted i
 keymap.set("n", "<leader>d", "\"_d")  -- delete into the void
 keymap.set("v", "<leader>d", "\"_d")  -- delete into the void
 
+vim.keymap.set("n", "<A-c>", function()
+  vim.api.nvim_feedkeys("c^", "n", false)
+end, { noremap = true, silent = true }) -- like shift+c but to the start
+
+vim.keymap.set("n", "<A-d>", function()
+  vim.api.nvim_feedkeys("d^", "n", false)
+end, { noremap = true, silent = true }) -- like shift+d but to the start
+
 -- Maven
 -- run application
 keymap.set("n", "<leader>mr", function()
@@ -94,7 +102,7 @@ keymap.set("n", "<leader>sj", "<C-w>-")     -- make split window height shorter
 keymap.set("n", "<leader>sk", "<C-w>+")     -- make split windows height taller
 keymap.set("n", "<leader>sl", "<C-w>>5")    -- make split windows width bigger
 keymap.set("n", "<leader>sh", "<C-w><5")    -- make split windows width smaller
-keymap.set("n", "<leader>so", ":only<CR>")  -- close all besides of current
+keymap.set("n", "<leader>oo", ":only<CR>")  -- close all besides of current window
 
 -- Tab management
 keymap.set("n", "<leader>to", ":tabnew<CR>")   -- open a new tab
@@ -151,7 +159,7 @@ keymap.set('n', '<leader>ft',
   end)
 vim.keymap.set("n", "<leader>fw", function()
   require("telescope.builtin").diagnostics({ cwd = vim.fn.getcwd() })
-end)
+end) -- find warnings
 
 -- Refactorings
 vim.keymap.set("n", "<leader>rv", function()

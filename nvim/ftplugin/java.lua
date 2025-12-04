@@ -61,31 +61,25 @@ local config = {
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
   settings = {
     java = {
-      home = "/usr/lib/jvm/java-21-openjdk-amd64",
-      eclipse = {
-        downloadSources = true,
-      },
+      home = "/usr/lib/jvm/java-25-openjdk-amd64",
       configuration = {
+        referencedLibraries = {
+          "/usr/lib/jvm/javafx-sdk-25.0.1/lib/*.jar",
+        },
         updateBuildConfiguration = "interactive",
         runtimes = {
           {
-            name = "JavaSE-21",
-            path = "/usr/lib/jvm/java-21-openjdk-amd64",
+            name = "JavaSE-25",
+            path = "/usr/lib/jvm/java-25-openjdk-amd64",
+            sources = "/usr/lib/jvm/java-25-openjdk-amd64/lib/src.zip"
           },
         },
       },
-      maven = {
-        downloadSources = true,
-      },
-      implementationsCodeLens = {
-        enabled = true,
-      },
-      referencesCodeLens = {
-        enabled = true,
-      },
-      references = {
-        includeDecompiledSources = false,
-      },
+      eclipse = { downloadSources = true, },
+      maven = { downloadSources = true, },
+      implementationsCodeLens = { enabled = true, },
+      referencesCodeLens = { enabled = true, },
+      references = { includeDecompiledSources = false, },
       signatureHelp = { enabled = true },
       format = {
         enabled = true,
@@ -103,7 +97,6 @@ local config = {
           "org.junit.jupiter.api.Assertions.*",
           "java.util.Objects.requireNonNull",
           "java.util.Objects.requireNonNullElse",
-          "org.mockito.Mockito.*",
         },
         importOrder = {
           "java",
@@ -135,25 +128,15 @@ local config = {
     -- References the bundles defined above to support Debugging and Unit Testing
     bundles = bundles,
     extendedClientCapabilities = jdtls.extendedClientCapabilities,
-
     workspace = workspace_dir,
-    -- Attach JDK source manually
-    sources = {
-      sourcePaths = {
-        "/usr/lib/jvm/java-21-openjdk-amd64/lib/src.zip",
-        "/home/dow/.m2/repository/org/openjfx/javafx-controls/21/javafx-controls-21-sources.jar",
-        "/home/dow/.m2/repository/org/openjfx/javafx-graphics/21/javafx-graphics-21-sources.jar",
-        "/home/dow/.m2/repository/org/openjfx/javafx-base/21/javafx-base-21-sources.jar",
-      },
-    },
   },
 }
 
 -- Needed for debugging
-config["on_attach"] = function(client, bufnr)
-  jdtls.setup_dap({ hotcodereplace = "auto" })
-  require("jdtls.dap").setup_dap_main_class_configs()
-end
+-- config["on_attach"] = function(client, bufnr)
+--   jdtls.setup_dap({ hotcodereplace = "auto" })
+--  require("jdtls.dap").setup_dap_main_class_configs()
+-- end
 
 -- This starts a new client & server, or attaches to an existing client & server based on the `root_dir`.
 jdtls.start_or_attach(config)
